@@ -13,16 +13,23 @@
     <title>click-da-game-of-life</title>
 
     <!-- <link                 rel="icon"        href="image/favicon.ico"> -->
-    <!-- <link type="text/css" rel="stylesheet"  href="css/app.css"> -->
-    <!-- <script type="text/javascript" src="js/libs.js" defer></script> -->
+    <link type="text/css" rel="stylesheet"  href="css/app.css">
 
+    <script type="text/javascript" src="js/libs.js" defer></script>
     <script type="text/javascript" src="js/app.js"  defer></script>
   </head>
 
-  <body>
-    SUP?
+  <body data-ng-controller="appController">
+    <table class="canvas-table">
+      <tbody>
+        <tr>
+          <td>
+            <canvas id="paper-canvas" ng-class="{ 'bordered' : ready }" ng-mousemove="onMouseMove($event)"></canvas>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </body>
-  <!-- <body data-ng-controller="appController"> -->
   <!--   <div class="page-wrapper" > -->
   <!--     <div class="content-frame" data-ng-include="'header.html'"></div> -->
 

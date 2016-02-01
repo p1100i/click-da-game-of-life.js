@@ -91,7 +91,7 @@ describe('Grid', function () {
     });
   });
 
-  describe('.update()', function () {
+  describe('.iterate()', function () {
     describe('with 3 cells over each other', function () {
       beforeEach(function () {
         this.grid.setCell(3, -1, true);
@@ -99,7 +99,7 @@ describe('Grid', function () {
 
         this.cell = this.grid.setCell(3, 0,  true);
 
-        this.grid.update();
+        this.grid.iterate();
       });
 
       it('should leave the middle one alive', function() {
@@ -120,7 +120,7 @@ describe('Grid', function () {
         this.grid.setCell(1, 0,  true);
         this.cell = this.grid.setCell(0, 0,  true);
 
-        this.grid.update();
+        this.grid.iterate();
       });
 
       it('should add one to fill up the quadrant', function() {
@@ -140,7 +140,7 @@ describe('Grid', function () {
         this.grid.setCell(0,  0,  true);
         this.grid.setCell(1, -1,  true);
 
-        this.grid.update();
+        this.grid.iterate();
       });
 
       it('should leave all alive', function() {
@@ -153,7 +153,7 @@ describe('Grid', function () {
 
       describe('with updating again', function () {
         beforeEach(function () {
-          this.grid.update();
+          this.grid.iterate();
         });
 
         it('should leave all alive', function() {

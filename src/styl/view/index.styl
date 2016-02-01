@@ -1,0 +1,89 @@
+table.canvas-table
+  text-align center
+  width 100%
+  height 100%
+  min-height 200px
+  min-width 200px
+
+canvas.bordered
+  border 2px solid #2d68ff
+
+div.page-wrapper
+  height          auto
+  min-height      100%
+  mix-user-select(none)
+
+div.content-frame
+  min-width $content-width
+
+div.content-wrapper
+  width           $content-width
+  margin          0 auto
+  padding-top     $header-size
+  display         table
+  padding-bottom  $footer-size + 50px
+
+div.content
+  margin-top 40px
+
+nav.header
+  color             white
+  z-index           3
+  position          fixed
+  width             100%
+  height            $header-size
+  background-color  $grey
+
+div.footer
+  color             white
+  clear             both
+  position          relative
+  height            $footer-size
+  margin-top        -1 * $footer-size
+  text-align        right
+  background-color  $grey-dark
+
+div.menu-wrapper
+  text-align center
+
+ul.menu
+  display inline-block
+  text-align center
+
+  li
+    float left
+
+a.menu-button
+  color           $grey-white
+  height          $header-size
+  display         table-cell
+  padding         0 10px
+  vertical-align  middle
+  &:hover
+    color white
+
+
+div.profile
+  float right
+  margin-left -100%
+
+div.logo
+  width         60px
+  margin-right  -60px
+  height        $header-size
+  float         left
+  display       inline-block
+
+div.notificator
+  width             600px
+  margin-left       -300px
+  z-index           5
+  opacity           0.7
+  padding           20px
+  left              50%
+  bottom            50px
+  position          fixed
+  mix-border-radius($border-radius)
+
+div.notification
+  max-height 200px

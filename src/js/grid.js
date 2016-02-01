@@ -15,7 +15,7 @@ Grid = function Grid() {
 
     createCell = function createCell(x, y, s) {
       var
-        key   = getKey(x, y);
+        key   = getKey(x, y),
         cell  = cells[key];
 
       if (!cell) {
@@ -82,8 +82,7 @@ Grid = function Grid() {
         i,
         key,
         cell,
-        coords,
-        neighbourCoordinates;
+        coords;
 
       for (key in cells) {
         cell    = cells[key];
@@ -129,13 +128,13 @@ Grid = function Grid() {
       }
     },
 
-    update = function update() {
+    iterate = function iterate() {
       createCellsDeadNeighbours();
       updateNextState();
       updateState();
     };
 
-  this.update   = update;
+  this.iterate  = iterate;
   this.setCell  = setCell;
   this.getCells = getCells;
 
