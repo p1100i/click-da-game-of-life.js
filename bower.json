@@ -1,0 +1,25 @@
+{
+  "name": "click-da-game-of-life",
+  "description": "Interactive demo for game-of-life.",
+  "main": "index.js",
+  "authors": [
+    "p1100i"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.9",
+    "angular-cookies": "~1.4.9",
+    "angular-route": "~1.4.9",
+    "paper": "~0.9.25"
+  }
+}
