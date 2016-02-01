@@ -1,6 +1,63 @@
 var
+  _ = require('lodash'),
+
   run = function run(grunt) {
     grunt.initConfig({
+
+      'jshint': {
+        'options': {
+          'browser'     : true,
+          'curly'       : true,
+          'eqeqeq'      : true,
+          'eqnull'      : true,
+          'latedef'     : true,
+          'newcap'      : true,
+          'node'        : true,
+          'nonew'       : true,
+          'nonbsp'      : true,
+          'quotmark'    : 'single',
+          'undef'       : true,
+          'debug'       : true,
+          'indent'      : 2
+        },
+
+        'unused' : {
+          'options' : {
+            'noempty' : true,
+            'unused'  : 'vars'
+          },
+
+          'files' : {
+            'src' : 'src/js/**/*'
+          }
+        },
+
+        'default' : 'src/js/**/*'
+      },
+
+      'jscs' : {
+        'options' : {
+          'disallowTrailingWhitespace'            : true,
+          'disallowTrailingComma'                 : true,
+          'disallowFunctionDeclarations'          : true,
+          'disallowNewlineBeforeBlockStatements'  : true,
+          'disallowMixedSpacesAndTabs'            : true,
+          'requireDotNotation'                    : true,
+          'requireMultipleVarDecl'                : true,
+          'requireSpaceAfterKeywords'             : true,
+          'requireSpaceBeforeBlockStatements'     : true,
+          'requireSpacesInConditionalExpression'  : true,
+          'requireCurlyBraces'                    : true,
+          'disallowKeywordsOnNewLine'             : ['else'],
+          'validateIndentation'                   : 2,
+          'requireSpacesInFunction' : {
+            'beforeOpeningCurlyBrace' : true
+          }
+        },
+
+        'default' : 'src/js/**/*'
+      },
+
       'clean': {
         'precompiled' : ['build/precompiled/**/*'],
         'compiled'    : ['build/compiled/**/*'],
@@ -79,38 +136,110 @@ var
         },
 
         'src': ['**/*']
+      },
+
+      // Stylus minifier/exporter.
+      'stylus' : {
+        'options' : {
+          // Use import statements on css as copy inclusion.
+          'include css' : true,
+          'compress'    : false
+        },
+
+        'compiled' : {
+          'files' : {
+            'build/compiled/css/app.css' : ['src/styl/main.styl']
+          }
+        }
+      },
+
+      'bower' : {
+        'install' : {
+          'options' : {
+            'copy' : false
+          }
+        }
+      },
+
+      // Concats bower components into a file.
+      'bower_concat' : {
+        'compiled' : {
+          'dest' : 'build/compiled/js/libs.js',
+        },
+
+        'minified' : {
+          // Special callback for defining built files general.
+          // In this case we want bower concat to use the minified builds.
+          'callback' : function callback(mainFiles, component) {
+            return _.map(mainFiles, function (filepath) {
+              var minPath;
+
+              minPath = filepath.replace(/\.js$/, '.min.js');
+
+              if (grunt.file.exists(minPath)) {
+                return minPath;
+              }
+
+              minPath = filepath.replace(/\.js$/, '-nodebug-jsmin.js');
+
+              if (grunt.file.exists(minPath)) {
+                return minPath;
+              }
+
+              return filepath;
+            });
+          },
+
+          'dest' : 'build/minified/js/libs.js'
+        }
       }
     });
 
     grunt.loadTasks('./task');
 
+    grunt.loadNpmTasks('grunt-bower-concat');
+    grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-stylus');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-gh-pages');
+    grunt.loadNpmTasks('grunt-jscs');
     grunt.loadNpmTasks('grunt-symlink');
 
     grunt.registerTask('setup', [
-      'symlink',
+      'bower',
+      'symlink'
     ]);
 
     grunt.registerTask('validate:build', [
+      'jshint:default',
       'jasmine-npm-node'
+      ]);
+
+    grunt.registerTask('validate:all', [
+      'validate:build',
+      'jshint:unused',
+      'jscs'
     ]);
 
     grunt.registerTask('compile', [
       'clean:precompiled',
       'clean:compiled',
+      'bower_concat:compiled',
       'browserify',
       'concat:compiled',
+      'stylus:compiled',
       'copy'
     ]);
 
     grunt.registerTask('minify', [
       'clean:minified',
+      'bower_concat:minified',
       'uglify:minified',
       'htmlmin:minified'
     ]);
@@ -118,6 +247,12 @@ var
     grunt.registerTask('build:dev', [
       'validate:build',
       'compile'
+    ]);
+
+
+
+    grunt.registerTask('test', [
+      'validate:all'
     ]);
 
     grunt.registerTask('build', [
