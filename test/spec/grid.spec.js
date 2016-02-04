@@ -121,15 +121,26 @@ describe('Grid', function () {
         this.cell = this.grid.setCell(0, 0,  true);
 
         this.grid.iterate();
+        this.cells = this.grid.getCells();
       });
 
       it('should add one to fill up the quadrant', function() {
         var
-          cells = this.grid.getCells(),
-          keys  = Object.keys(cells);
+          keys  = Object.keys(this.cells);
 
         expect(keys.length).toBe(4);
-        expect(cells['1_-1']).toBeTruthy();
+      });
+
+      it('should increase the age of the existing cell', function() {
+        expect(this.cell.a).toBe(1);
+      });
+
+      it('should increase the living cells age', function() {
+        var
+          newCell = this.cells['1_-1'];
+
+        expect(newCell).toBeTruthy();
+        expect(newCell.a).toBe(0);
       });
     });
 
@@ -141,14 +152,17 @@ describe('Grid', function () {
         this.grid.setCell(1, -1,  true);
 
         this.grid.iterate();
+        this.cells = this.grid.getCells();
+        this.keys  = Object.keys(this.cells);
+        this.cell  = this.cells[this.keys[0]];
       });
 
       it('should leave all alive', function() {
-        var
-          cells = this.grid.getCells(),
-          keys  = Object.keys(cells);
+        expect(this.keys.length).toBe(4);
+      });
 
-        expect(keys.length).toBe(4);
+      it('should increase theire age', function() {
+        expect(this.cell.a).toBe(1);
       });
 
       describe('with updating again', function () {
@@ -157,11 +171,11 @@ describe('Grid', function () {
         });
 
         it('should leave all alive', function() {
-          var
-            cells = this.grid.getCells(),
-            keys  = Object.keys(cells);
+          expect(this.keys.length).toBe(4);
+        });
 
-          expect(keys.length).toBe(4);
+        it('should increase theire age again', function() {
+          expect(this.cell.a).toBe(2);
         });
       });
     });

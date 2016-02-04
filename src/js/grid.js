@@ -23,6 +23,7 @@ Grid = function Grid() {
           'x'   : x,
           'y'   : y,
           's'   : s === undefined ? false : s,
+          'a'   : 0,
           'ns'  : false
         };
         cells[key] = cell;
@@ -118,6 +119,10 @@ Grid = function Grid() {
 
       for (key in cells) {
         cell = cells[key];
+
+        if (cell.s) {
+          cell.a++;
+        }
 
         cell.s  = cell.ns;
         cell.ns = false;
