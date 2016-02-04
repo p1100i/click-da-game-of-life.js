@@ -249,8 +249,6 @@ var
       'compile'
     ]);
 
-
-
     grunt.registerTask('test', [
       'validate:all'
     ]);
