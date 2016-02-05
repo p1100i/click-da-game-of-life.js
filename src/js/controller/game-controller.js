@@ -46,7 +46,15 @@ GameControllerFactoryConstructor = function GameControllerFactoryConstructor(app
         [  0, -10],
         [  0,  -9],
         [  1, -11],
-        [  1, -10]
+        [  1, -10],
+        [  -41, -11],
+        [  -40, -11],
+        [  -39, -11],
+        [  -41, -10],
+        [  -39, -10],
+        [  -41,  -9],
+        [  -39,  -9],
+        [  -40,  -8]
       ],
 
       setPlaying = function setPlaying(newPlaying) {
