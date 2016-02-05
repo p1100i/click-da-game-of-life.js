@@ -113,7 +113,7 @@ var
           },
 
           'files': {
-            'build/minified/js/app.js': 'build/compiled/js/app.js'
+            'build/minified/js/app.js': ['build/compiled/js/template.js', 'build/compiled/js/app.js']
           }
         }
       },
@@ -125,7 +125,7 @@ var
 
         'compiled' : {
           'files': {
-            'build/compiled/js/app.js': 'build/precompiled/js/app.js'
+            'build/compiled/js/app.js': ['build/precompiled/js/template.js', 'build/precompiled/js/app.js']
           }
         }
       },
@@ -157,6 +157,31 @@ var
         'install' : {
           'options' : {
             'copy' : false
+          }
+        }
+      },
+
+      // If angular is used template can be compiled for it.
+      'ngtemplates' : {
+        'default' : {
+          'cwd'         : 'src/html/template',
+          'src'         : '**/*.html',
+          'dest'        : 'build/precompiled/js/template.js',
+          'options'     : {
+            'bootstrap': function (module, script) {
+              // This predefines a function which will populate the angular
+              // cache with the template HTML. Check out the generated
+              // template.js under the build directory, you'll need to call
+              // it with your angular app instance.
+              return 'window.angularTemplates = function angularTemplates(app) { app.run([\'$templateCache\', function ($templateCache) { ' + script + ' } ]) };';
+            },
+
+            // Reference existing task.
+            // htmlmin:  '<%= htmlmin.app %>'
+            'htmlmin' : {
+              'collapseWhitespace'        : true,
+              'collapseBooleanAttributes' : true
+            }
           }
         }
       },
@@ -197,6 +222,7 @@ var
 
     grunt.loadTasks('./task');
 
+    grunt.loadNpmTasks('grunt-angular-templates');
     grunt.loadNpmTasks('grunt-bower-concat');
     grunt.loadNpmTasks('grunt-bower-task');
     grunt.loadNpmTasks('grunt-browserify');
@@ -232,6 +258,7 @@ var
       'clean:compiled',
       'bower_concat:compiled',
       'browserify',
+      'ngtemplates',
       'concat:compiled',
       'stylus:compiled',
       'copy'

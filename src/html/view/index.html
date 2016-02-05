@@ -19,25 +19,5 @@
     <script type="text/javascript" src="js/app.js"  defer></script>
   </head>
 
-  <body data-ng-controller="appController">
-    <table class="canvas-table">
-      <tbody>
-        <tr>
-          <td>
-            <canvas id="paper-canvas" ng-class="{ 'bordered' : ready }" ng-mousemove="onMouseMove($event)"></canvas>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </body>
-  <!--   <div class="page-wrapper" > -->
-  <!--     <div class="content-frame" data-ng-include="'header.html'"></div> -->
-
-  <!--     <div class="content-wrapper"> -->
-  <!--       <div class="content" data-ng-view=""></div> -->
-  <!--     </div> -->
-
-  <!--   </div> -->
-  <!--   <div class="content-frame" data-ng-include="'footer.html'"></div> -->
-  <!-- </body> -->
+  <body data-ng-controller="appController" data-ng-view=""></body>
 </html>

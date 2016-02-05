@@ -6,12 +6,16 @@ var
 
   libs        = {},
   libDefs     = {},
-  constants   = [],
   factories   = [],
   directives  = [],
 
+  constants = [
+    require('./constant/route-config')
+  ],
+
   controllers = [
-    require('src/controller/app-controller')
+    require('src/controller/app-controller'),
+    require('src/controller/game-controller')
   ],
 
   angularComponents = [
@@ -60,10 +64,6 @@ var
   },
 
   loadAngularRoutes = function loadAngularRoutes(angularApp) {
-    angularApp.constant('routeConfig', {
-      'routes' : {}
-    });
-
     angularApp.config(['$routeProvider', 'routeConfig', function ($routeProvider, routeConfig) {
       var
         i,
@@ -142,12 +142,12 @@ var
   },
 
   defineLibs = function defineLibs() {
-    defineLib('paper',            'paper'                                     );
-    defineLib('angular',          'angular'                                   );
-    defineLib('angularTemplates', 'angularTemplates', undefined,          true);
-    defineLib('MyHelper',         undefined,          require('my-helper')    );
-    defineLib('Grid',             undefined,          require('src/grid')     );
-    defineLib('Vec2',             undefined,          require('vec2')         );
+    defineLib('paper',            'paper'                                   );
+    defineLib('angular',          'angular'                                 );
+    defineLib('angularTemplates', 'angularTemplates'                        );
+    defineLib('MyHelper',         undefined,          require('my-helper')  );
+    defineLib('Grid',             undefined,          require('src/grid')   );
+    defineLib('Vec2',             undefined,          require('vec2')       );
   },
 
   init = function init() {

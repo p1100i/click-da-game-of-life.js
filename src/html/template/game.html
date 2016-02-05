@@ -1,0 +1,14 @@
+<table class="canvas-table">
+  <tbody>
+    <tr>
+      <td>
+        <div>
+          <div class="buttons">
+            <a class="button" data-ng-click="togglePlaying()">{{ playing ? '◾' : '▶' }}</a>
+          </div>
+          <canvas id="paper-canvas" data-ng-class="{ 'bordered' : ready }" data-ng-mousedown="onMouseDown($event)" data-ng-mouseup="onMouseUp(false)" data-ng-mousemove="onMouseMove($event)"></canvas>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
