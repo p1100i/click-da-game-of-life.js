@@ -3,6 +3,7 @@ var
 
   run = function run(grunt) {
     grunt.initConfig({
+      'pkg' : grunt.file.readJSON('package.json'),
 
       'jshint': {
         'options': {
@@ -132,7 +133,11 @@ var
 
       'gh-pages': {
         'options': {
-          'base': 'build/minified'
+          'base': 'build/minified',
+          'user': {
+            'name': '<%= pkg.author.name %>',
+            'email': '<%= pkg.author.email %>'
+          }
         },
 
         'src': ['**/*']
@@ -149,6 +154,19 @@ var
         'compiled' : {
           'files' : {
             'build/compiled/css/app.css' : ['src/styl/main.styl']
+          }
+        }
+      },
+
+      'cssmin': {
+        'options': {
+          'shorthandCompacting': false,
+          'roundingPrecision': -1
+        },
+
+        'minified': {
+          'files': {
+            'build/minified/css/app.css': ['build/compiled/css/app.css']
           }
         }
       },
@@ -217,6 +235,36 @@ var
 
           'dest' : 'build/minified/js/libs.js'
         }
+      },
+
+      'md5symlink': {
+        'options' : {
+          'patterns' : ['.js', '.css']
+        },
+
+        'compiled': {
+          'src': 'build/compiled/**/*',
+          'dest': 'build/compiled/'
+        },
+
+        'minified': {
+          'src': 'build/minified/**/*',
+          'dest': 'build/minified/'
+        }
+      },
+
+      'symlinkassets': {
+        'compiled': {
+          'root'    : 'compiled',
+          'src'     : 'build/compiled/**/*',
+          'dest'    : 'build/compiled/'
+        },
+
+        'minified': {
+          'root'    : 'minified',
+          'src'     : 'build/minified/**/*',
+          'dest'    : 'build/minified/'
+        }
       }
     });
 
@@ -229,13 +277,16 @@ var
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-stylus');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-gh-pages');
     grunt.loadNpmTasks('grunt-jscs');
+    grunt.loadNpmTasks('grunt-md5symlink');
     grunt.loadNpmTasks('grunt-symlink');
+    grunt.loadNpmTasks('grunt-symlinkassets');
 
     grunt.registerTask('setup', [
       'bower',
@@ -268,7 +319,8 @@ var
       'clean:minified',
       'bower_concat:minified',
       'uglify:minified',
-      'htmlmin:minified'
+      'htmlmin:minified',
+      'cssmin:minified'
     ]);
 
     grunt.registerTask('build:dev', [
@@ -280,11 +332,15 @@ var
       'validate:all'
     ]);
 
+    grunt.registerTask('md5', [
+      'md5symlink',
+      'symlinkassets'
+    ]);
+
     grunt.registerTask('build', [
       'build:dev',
-      'minify'
-      // TODO
-      // 'md5'
+      'minify',
+      'md5'
     ]);
 
     grunt.registerTask('default', [
