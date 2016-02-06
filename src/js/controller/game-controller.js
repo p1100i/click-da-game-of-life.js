@@ -2,7 +2,7 @@ var
   GameControllerFactoryConstructor;
 
 GameControllerFactoryConstructor = function GameControllerFactoryConstructor(app) {
-  app.controller('gameController', ['$rootScope', '$scope', '$window', 'angular', 'Grid', 'Vec2', 'paper', 'MyHelper', function GameControllerFactory($rootScope, $scope, $window, angular, Grid, Vec2, paper, MyHelper) {
+  app.controller('gameController', ['$rootScope', '$scope', '$window', 'angular', 'Grid', 'Vec2', 'paper', 'MyHelper', 'magicService', function GameControllerFactory($rootScope, $scope, $window, angular, Grid, Vec2, paper, MyHelper, magicService) {
     var
       spawning,
       playing,
@@ -13,7 +13,9 @@ GameControllerFactoryConstructor = function GameControllerFactoryConstructor(app
       lastTimestamp,
       lastIteratedTimestamp,
       viewSize,
+      mouseDrawnCell,
       targetVec             = new Vec2(),
+      mouseGridVec          = new Vec2(),
       windowSizeVec         = new Vec2(),
       gridDimensions        = new Vec2(),
       canvas                = document.getElementById('paper-canvas'),
@@ -25,21 +27,10 @@ GameControllerFactoryConstructor = function GameControllerFactoryConstructor(app
       PAGE_OFFSET           = new Vec2(50, 50),
       TIME_UNIT             = 50,
       ITERATE_TIME_UNIT     = 200,
-      CELL_FILL_COLOR       = [88, 255, 179],
-      CELL_FILL_COLOR_NORM  = [CELL_FILL_COLOR[0] / 255, CELL_FILL_COLOR[1] / 255, CELL_FILL_COLOR[2] / 255],
+      CELL_FILL_COLOR_NORM  = magicService.divideElement([88, 255, 179], 255),
+      CELL_FILL_COLOR_MOUSE = magicService.divideElement([207, 106, 180], 255),
       DEAD_CELL_AGE         = 10,
 
-      //
-      // STARTING_CELLS = [
-      //   [32, 32],
-      //   [32, 33],
-      //   [33, 32],
-      //   [33, 33],
-      //   [35, 31],
-      //   [35, 32],
-      //   [35, 33]
-      // ],
-      //
       STARTING_CELLS = [
         [ -1, -11],
         [ -1, -10],
@@ -99,7 +90,6 @@ GameControllerFactoryConstructor = function GameControllerFactoryConstructor(app
       },
 
       /**
-       *
        * @param {Array} colorModifier e.g. [2, -0.01] meaning decreasing the last index of RGB
        */
       setDrawnObject = function setDrawnObject(object, position, positionScale, offset, colorModifier) {
@@ -145,6 +135,18 @@ GameControllerFactoryConstructor = function GameControllerFactoryConstructor(app
         }
       },
 
+      setMouseDrawnCell = function setMouseDrawnCell() {
+        mouseDrawnCell = createDrawnObject(CELL_SIZE, CELL_FILL_COLOR_MOUSE);
+      },
+
+      drawMouseCell = function drawMouseCell() {
+        if (!mouseGridVec.length()) {
+          return;
+        }
+
+        setDrawnObject(mouseDrawnCell, mouseGridVec, CELL_SIZE, HALF_CELL_SIZE);
+      },
+
       drawCells = function drawCells() {
         var
           i,
@@ -163,6 +165,8 @@ GameControllerFactoryConstructor = function GameControllerFactoryConstructor(app
           setDrawnObject(drawnCell, cell, CELL_SIZE, HALF_CELL_SIZE, ['green', cellYoungness]);
           i++;
         }
+
+        drawMouseCell();
       },
 
       redraw = function redraw(redrawGrid) {
@@ -232,6 +236,7 @@ GameControllerFactoryConstructor = function GameControllerFactoryConstructor(app
 
         targetVec.set(gridDimensions);
         targetVec.divide(2);
+        targetVec.set(Math.round(targetVec.x), Math.round(targetVec.y));
 
         for (i = 0; i < cells.length; i++) {
           cell = cells[i];
@@ -245,15 +250,7 @@ GameControllerFactoryConstructor = function GameControllerFactoryConstructor(app
           return;
         }
 
-        var
-          canvasOffset  = MyHelper.getElementPageOffset(canvas, $window),
-          mouseOffset   = MyHelper.getMouseEventPageOffset($event);
-
-        targetVec.set(mouseOffset.left - canvasOffset.left - 6, mouseOffset.top - canvasOffset.top - 3);
-        targetVec.divide(CELL_SIZE);
-        targetVec.set(Math.round(targetVec.x), Math.round(targetVec.y));
-
-        grid.setCell(targetVec.x, targetVec.y, 1);
+        grid.setCell(mouseGridVec.x, mouseGridVec.y, 1);
       },
 
       onMouseDown = function onMouseDown($event) {
@@ -266,6 +263,14 @@ GameControllerFactoryConstructor = function GameControllerFactoryConstructor(app
       },
 
       onMouseMove = function onMouseMove($event) {
+        var
+          canvasOffset  = MyHelper.getElementPageOffset(canvas, $window),
+          mouseOffset   = MyHelper.getMouseEventPageOffset($event);
+
+        mouseGridVec.set(mouseOffset.left - canvasOffset.left - 8, mouseOffset.top - canvasOffset.top - 7);
+        mouseGridVec.divide(CELL_SIZE);
+        mouseGridVec.set(Math.round(mouseGridVec.x), Math.round(mouseGridVec.y));
+
         spawn($event);
       },
 
@@ -273,6 +278,7 @@ GameControllerFactoryConstructor = function GameControllerFactoryConstructor(app
         updater = update;
         paper.setup(canvas);
 
+        setMouseDrawnCell();
         setPlaying(true);
         setPaperSize();
 

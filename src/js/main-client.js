@@ -6,11 +6,14 @@ var
 
   libs        = {},
   libDefs     = {},
-  factories   = [],
   directives  = [],
 
   constants = [
     require('./constant/route-config')
+  ],
+
+  factories = [
+    require('./factory/magic-service')
   ],
 
   controllers = [
