@@ -1,6 +1,10 @@
 # click-da-game-of-life.js
 
-### TODO
-+ set grid size by the browser page size
-+ reset grid size on resizing the browser
-- howering the canvas show a cell to place
+## Try it!
+Visit the projects [GitHub IO Page][github-io] and play around.
+
+## License
+[MIT License][git-LICENSE]
+
+  [git-LICENSE]: LICENSE
+  [github-io]: http://p1100i.github.io/click-da-game-of-life.js
