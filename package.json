@@ -32,8 +32,6 @@
     "grunt-md5symlink": "^0.1.0",
     "grunt-symlink": "^0.4.0",
     "grunt-symlinkassets": "^0.1.1",
-    "jasmine": "^2.4.1",
-    "jasmine-spec-reporter": "^2.4.0",
     "lodash": "^4.0.0"
   },
   "dependencies": {
