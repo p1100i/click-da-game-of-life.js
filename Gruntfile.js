@@ -5,6 +5,14 @@ var
     grunt.initConfig({
       'pkg' : grunt.file.readJSON('package.json'),
 
+      'jasmine_nodejs' : {
+        'all' : {
+          'specs' : [
+            'test/**/*'
+          ]
+        }
+      },
+
       'jshint': {
         'options': {
           'browser'     : true,
@@ -75,10 +83,6 @@ var
           'dest'        : 'node_modules/app',
           'relativeSrc' : '..'
         }
-      },
-
-      'jasmine-npm-node' : {
-        'all' : {}
       },
 
       'browserify' : {
@@ -268,8 +272,6 @@ var
       }
     });
 
-    grunt.loadTasks('./task');
-
     grunt.loadNpmTasks('grunt-angular-templates');
     grunt.loadNpmTasks('grunt-bower-concat');
     grunt.loadNpmTasks('grunt-bower-task');
@@ -287,6 +289,7 @@ var
     grunt.loadNpmTasks('grunt-md5symlink');
     grunt.loadNpmTasks('grunt-symlink');
     grunt.loadNpmTasks('grunt-symlinkassets');
+    grunt.loadNpmTasks('grunt-jasmine-nodejs');
 
     grunt.registerTask('setup', [
       'bower',
@@ -295,8 +298,8 @@ var
 
     grunt.registerTask('validate:build', [
       'jshint:default',
-      'jasmine-npm-node'
-      ]);
+      'jasmine_nodejs'
+    ]);
 
     grunt.registerTask('validate:all', [
       'validate:build',
