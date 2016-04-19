@@ -3,10 +3,34 @@
     <tr>
       <td>
         <div>
-          <div class="buttons">
-            <a class="button" data-ng-click="togglePlaying()">{{ playing ? '◾' : '▶' }}</a>
+          <canvas
+            id="paper-canvas"
+            data-ng-class="{ 'bordered' : ready }"
+            data-ng-mousedown="onMouseDown($event)"
+            data-ng-mouseup="onMouseUp(false)"
+            data-ng-mousemove="onMouseMove($event)">
+          </canvas>
+
+          <div class="buttons border-t-radius">
+            <a
+              title="Toggle Play/Pause"
+              class="shadow button mega-octicon"
+              data-ng-click="togglePlaying()"
+              ng-class="{ true : 'octicon-triangle-right', false : 'octicon-primitive-square' }[!!playing]">
+            </a>
+
+            <a
+              title="Projects GitHub page"
+              href="https://github.com/p1100i/click-da-game-of-life.js"
+              class="shadow button mega-octicon octicon-mark-github">
+            </a>
+
+            <a
+              title="p1100i's github.io page"
+              href="https://p1100i.github.io"
+              class="shadow button mega-octicon octicon-broadcast">
+            </a>
           </div>
-          <canvas id="paper-canvas" data-ng-class="{ 'bordered' : ready }" data-ng-mousedown="onMouseDown($event)" data-ng-mouseup="onMouseUp(false)" data-ng-mousemove="onMouseMove($event)"></canvas>
         </div>
       </td>
     </tr>
