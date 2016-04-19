@@ -367,6 +367,13 @@ var
       'watch'
     ]);
 
+    grunt.registerTask('publish', [
+      'clean',
+      'setup',
+      'build',
+      'gh-pages'
+    ]);
+
     grunt.registerTask('test', [
       'validate:all'
     ]);
