@@ -17,8 +17,8 @@ var
   ],
 
   controllers = [
-    require('src/controller/app-controller'),
-    require('src/controller/game-controller')
+    require('./controller/app-controller'),
+    require('./controller/game-controller')
   ],
 
   angularComponents = [
@@ -149,7 +149,7 @@ var
     defineLib('angular',          'angular'                                 );
     defineLib('angularTemplates', 'angularTemplates'                        );
     defineLib('MyHelper',         undefined,          require('my-helper')  );
-    defineLib('Grid',             undefined,          require('src/grid')   );
+    defineLib('Grid',             undefined,          require('./grid')     );
     defineLib('Vec2',             undefined,          require('vec2')       );
   },
 

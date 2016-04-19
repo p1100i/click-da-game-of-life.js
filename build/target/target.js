@@ -1,1 +1,1 @@
-require('src/main-client');
+require('../../src/js/main-client');

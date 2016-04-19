@@ -73,18 +73,6 @@ var
         'minified'    : ['build/minified/**/*']
       },
 
-      'symlink' : {
-        'src' : {
-          'dest'        : 'node_modules/src',
-          'relativeSrc' : '../src/js'
-        },
-
-        'app' : {
-          'dest'        : 'node_modules/app',
-          'relativeSrc' : '..'
-        }
-      },
-
       'browserify' : {
         'build/precompiled/js/app.js' : ['build/target/target.js']
       },
@@ -283,6 +271,33 @@ var
           'src'     : 'build/minified/**/*',
           'dest'    : 'build/minified/'
         }
+      },
+
+      'watch' : {
+        'options' : {
+          'spawn'         : false,
+          'maxListeners'  : 99
+        },
+
+        'js' : {
+          'files' : ['src/js/**/*.js', 'test/spec/**/*.js'],
+          'tasks' : ['validate:build', 'browserify', 'concat:compiled']
+        },
+
+        'html' : {
+          'files' : ['src/html/**/*.html'],
+          'tasks' : ['ngtemplates', 'concat:compiled', 'copy:view']
+        },
+
+        'styl' : {
+          'files' : ['src/styl/**/*'],
+          'tasks' : ['stylus:compiled']
+        },
+
+        'asset' : {
+          'files' : ['asset/**/*'],
+          'tasks' : ['copy:asset_compiled', 'copy:asset_minified']
+        }
       }
     });
 
@@ -298,16 +313,15 @@ var
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-stylus');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-gh-pages');
     grunt.loadNpmTasks('grunt-jscs');
     grunt.loadNpmTasks('grunt-md5symlink');
-    grunt.loadNpmTasks('grunt-symlink');
     grunt.loadNpmTasks('grunt-symlinkassets');
     grunt.loadNpmTasks('grunt-jasmine-nodejs');
 
     grunt.registerTask('setup', [
-      'bower',
-      'symlink'
+      'bower'
     ]);
 
     grunt.registerTask('validate:build', [
@@ -347,6 +361,12 @@ var
       'compile'
     ]);
 
+    grunt.registerTask('dev', [
+      'clean',
+      'build:dev',
+      'watch'
+    ]);
+
     grunt.registerTask('test', [
       'validate:all'
     ]);
@@ -363,6 +383,7 @@ var
     ]);
 
     grunt.registerTask('default', [
+      'setup',
       'build'
     ]);
   };

@@ -4,7 +4,7 @@
   "description": "Interactive demo for game-of-life.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./grunt test"
   },
   "author": {
     "name": "p1100i",
@@ -26,11 +26,11 @@
     "grunt-contrib-jshint": "^0.12.0",
     "grunt-contrib-stylus": "^1.0.0",
     "grunt-contrib-uglify": "^0.11.0",
+    "grunt-contrib-watch": "^1.0.0",
     "grunt-gh-pages": "^1.0.0",
     "grunt-jasmine-nodejs": "^1.5.0",
     "grunt-jscs": "^2.6.0",
     "grunt-md5symlink": "^0.1.0",
-    "grunt-symlink": "^0.4.0",
     "grunt-symlinkassets": "^0.1.1",
     "lodash": "^4.0.0"
   },

@@ -1,5 +1,5 @@
 var
-  Grid = require('src/grid');
+  Grid = require('../../src/js/grid');
 
 describe('Grid', function () {
   beforeEach(function () {
