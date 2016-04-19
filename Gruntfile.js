@@ -90,12 +90,26 @@ var
       },
 
       'copy' : {
-        'view' : {
+        'asset_compiled' : {
           'expand'  : true,
-          'cwd'     : 'src/html/view/',
+          'cwd'     : 'asset/',
           'src'     : '**/*',
           'dest'    : 'build/compiled/'
         },
+
+        'asset_minified' : {
+          'expand'  : true,
+          'cwd'     : 'asset/',
+          'src'     : '**/*',
+          'dest'    : 'build/minified/'
+        },
+
+        'view' : {
+          'expand'  : true,
+          'cwd'     : 'src/html/view',
+          'src'     : '**/*',
+          'dest'    : 'build/compiled'
+        }
       },
 
       'htmlmin': {
@@ -315,7 +329,8 @@ var
       'ngtemplates',
       'concat:compiled',
       'stylus:compiled',
-      'copy'
+      'copy:view',
+      'copy:asset_compiled'
     ]);
 
     grunt.registerTask('minify', [
@@ -323,7 +338,8 @@ var
       'bower_concat:minified',
       'uglify:minified',
       'htmlmin:minified',
-      'cssmin:minified'
+      'cssmin:minified',
+      'copy:asset_minified'
     ]);
 
     grunt.registerTask('build:dev', [
